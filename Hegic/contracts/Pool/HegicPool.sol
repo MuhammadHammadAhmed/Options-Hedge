@@ -272,6 +272,8 @@ abstract contract HegicPool is
      * contract that will be used for pricing the options.
      * @param pc A new price calculator contract address
      **/
+     //#HMD-  set the price calculator contract  refrence in pricer  variable, which is subsequently used to calculate options price
+    // called by Admin  only
     function setPriceCalculator(IPriceCalculator pc)
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -285,6 +287,7 @@ abstract contract HegicPool is
      * accrued during the period of holding the option contract.
      * @param id ID of ERC721 token linked to the option
      **/
+     //#HMD called by the Excerciser.sol
     function exercise(uint256 id) external override {
         Option storage option = options[id];
         uint256 profit = _profitOf(option);
@@ -305,7 +308,7 @@ abstract contract HegicPool is
         _send(optionsManager.ownerOf(id), profit);
         emit Exercised(id, profit);
     }
-
+//#HMD private function, called within the contract from excercise function to transer profit to option owner
     function _send(address to, uint256 transferAmount) private {
         require(to != address(0));
         uint256 hedgeLoss = (transferAmount * hedgedBalance) / totalBalance();
@@ -324,6 +327,7 @@ abstract contract HegicPool is
      * that are distributed pro rata among the liquidity providers.
      * @param id ID of ERC721 token linked to the option
      **/
+     //#HMD called by Facade.sol, but can also be called by external UI.
     function unlock(uint256 id) external override {
         Option storage option = options[id];
         require(
@@ -334,7 +338,7 @@ abstract contract HegicPool is
         option.state = OptionState.Expired;
         emit Expired(id);
     }
-
+//#HMD  internal function callled by above  unlock function to  implement the unlock logic and also from excercise function above
     function _unlock(Option storage option) internal {
         require(
             option.state == OptionState.Active,
@@ -344,7 +348,7 @@ abstract contract HegicPool is
         hedgedBalance += option.hedgePremium;
         unhedgedBalance += option.unhedgePremium;
     }
-
+//#HMD -  internal  function called from sellOption function
     function _calculateLockedAmount(uint256 amount)
         internal
         virtual
@@ -363,6 +367,7 @@ abstract contract HegicPool is
      * @param hedged The type of the liquidity tranche
      * @param minShare The minimum share in the pool for the user
      **/
+     //#HMD-  called from Facade.sol's provide ETHtoPool function
     function provideFrom(
         address account,
         uint256 amount,
@@ -409,6 +414,7 @@ abstract contract HegicPool is
      * @param trancheID The liquidity tranche ID
      * @return amount The amount received after the withdrawal
      **/
+     //#HMD external function called from frontend
     function withdraw(uint256 trancheID)
         external
         override
@@ -435,6 +441,8 @@ abstract contract HegicPool is
      * @param trancheID ID of liquidity tranche
      * @return amount The amount received after the withdrawal
      **/
+
+          //#HMD external function called from frontend
     function withdrawWithoutHedge(uint256 trancheID)
         external
         override
@@ -445,7 +453,7 @@ abstract contract HegicPool is
         amount = _withdraw(owner, trancheID);
         emit Withdrawn(owner, trancheID, amount);
     }
-
+//#HMD internal function called by withdraw functions above
     function _withdraw(address owner, uint256 trancheID)
         internal
         returns (uint256 amount)
@@ -507,10 +515,11 @@ abstract contract HegicPool is
      * if she exercises it as an ITM (in-the-money) option.
      * @param id ID of ERC721 token linked to the option
      **/
+     //HMD- view functioncalled from Facade  contract ad from front end
     function profitOf(uint256 id) external view returns (uint256) {
         return _profitOf(options[id]);
     }
-
+//HMD- vinternal function called from ProfitOf function above
     function _profitOf(Option memory option)
         internal
         view
