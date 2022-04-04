@@ -367,7 +367,7 @@ abstract contract HegicPool is
      * @param hedged The type of the liquidity tranche
      * @param minShare The minimum share in the pool for the user
      **/
-     //#HMD-  called from Facade.sol's provide ETHtoPool function
+     //#HMD-  called from Facade.sol's provideETHtoPool function
     function provideFrom(
         address account,
         uint256 amount,
@@ -487,6 +487,8 @@ abstract contract HegicPool is
     /**
      * @return balance Returns the amount of liquidity available for withdrawing
      **/
+     //#HMD - called from frontend
+       //#HMD a view function just to show total balance
     function availableBalance() public view returns (uint256 balance) {
         return totalBalance() - lockedAmount;
     }
@@ -494,6 +496,7 @@ abstract contract HegicPool is
     /**
      * @return balance Returns the total balance of liquidity provided to the pool
      **/
+     //#HMD a view function just to show total balance
     function totalBalance() public view override returns (uint256 balance) {
         return hedgedBalance + unhedgedBalance;
     }
@@ -535,6 +538,7 @@ abstract contract HegicPool is
      * @param period The period of holding the option
      * @param period The size of the option
      **/
+     //#HMD external view function caled from Facade.sol and frontend
     function calculateTotalPremium(
         uint256 period,
         uint256 amount,
@@ -542,7 +546,7 @@ abstract contract HegicPool is
     ) external view override returns (uint256 settlementFee, uint256 premium) {
         return _calculateTotalPremium(period, amount, strike);
     }
-
+ //#HMD internal view function caled from calculateTotalPremium function above
     function _calculateTotalPremium(
         uint256 period,
         uint256 amount,
@@ -565,7 +569,8 @@ abstract contract HegicPool is
      * (staking rewards) among the staking participants.
      * @param recipient New staking contract address
      **/
-    function setSettlementFeeRecipient(IHegicStaking recipient)
+     //#HMD lexternally called function to updates the settlementFeeRecipient address, to receive settlement fees
+     function setSettlementFeeRecipient(IHegicStaking recipient)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
