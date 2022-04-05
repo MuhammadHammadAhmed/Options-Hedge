@@ -165,6 +165,7 @@ abstract contract HegicPool is
      * of exercising the option using the pool's unutilized (unlocked) funds.
      * @param value The collateralization ratio in a range of 30% — 100%
      **/
+     //#HMD  external function called  by admin to update setting  of collateralization ratio
     function setCollateralizationRatio(uint256 value)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -260,8 +261,8 @@ abstract contract HegicPool is
             _msgSender(),
             address(this),
             premium + settlementFee
-        );
-        token.safeTransfer(address(settlementFeeRecipient), settlementFee);
+        );//the option buyer to transfer premium to this pool contract
+        token.safeTransfer(address(settlementFeeRecipient), settlementFee);// transfer the  settlement fee to staking contract as a reward distribution  to stakeers
         settlementFeeRecipient.distributeUnrealizedRewards();
         if (hedgeFee > 0) token.safeTransfer(hedgePool, hedgeFee);
         emit Acquired(id, settlementFee, premium);

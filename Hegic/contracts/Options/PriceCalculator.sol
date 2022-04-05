@@ -76,6 +76,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * @return premium The part of the premium that
      * is distributed among the liquidity providers
      **/
+     //#HMD- called by HegicPool to calculate premium of the options
     function calculateTotalPremium(
         uint256 period,
         uint256 amount,

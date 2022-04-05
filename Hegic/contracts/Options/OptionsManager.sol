@@ -48,6 +48,7 @@ contract OptionsManager is
      * @dev See EIP-165: ERC-165 Standard Interface Detection
      * https://eips.ethereum.org/EIPS/eip-165
      **/
+     //#HMD  called frm HegicPool contract at the time of creating Option. returns a unique optoin number.
     function createOptionFor(address holder)
         public
         override
@@ -83,6 +84,7 @@ contract OptionsManager is
      * that is used for exercising the options
      * @param tokenId The ERC721 token ID that is linked to the option
      **/
+     //#HMD a view  caled from Facade.sol andHegic Pool to confirm the ownership or authorized spending/ excercising of option
     function isApprovedOrOwner(address spender, uint256 tokenId)
         external
         view
