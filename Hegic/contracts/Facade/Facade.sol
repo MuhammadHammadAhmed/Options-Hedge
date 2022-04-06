@@ -64,6 +64,7 @@ contract Facade is Ownable {
      * @param settlementFee The part of the premium that
      * is distributed among the HEGIC staking participants
      **/
+     //#HMD a view function to get option price, accssed  within the contract as well as from frontend.
     function getOptionPrice(
         IHegicPool pool,
         uint256 period,
@@ -98,6 +99,8 @@ contract Facade is Ownable {
      * @param amount The option size
      * @param strike The option strike
      **/
+     //#HMd  view function to get base option cost accessed from frontend as well as within contract; 
+     // access the calculateTotalPremium function of HegicPool
     function getBaseOptionCost(
         IHegicPool pool,
         uint256 period,
@@ -123,6 +126,7 @@ contract Facade is Ownable {
     /**
      * @notice Used for approving the pools contracts addresses.
      **/
+     //#HMD external function called from frontend
     function poolApprove(IHegicPool pool) external {
         pool.token().safeApprove(address(pool), 0);
         pool.token().safeApprove(address(pool), type(uint256).max);
@@ -137,6 +141,7 @@ contract Facade is Ownable {
      * @param strike The option strike
      * @param acceptablePrice The highest acceptable price
      **/
+     //#HMD called from fron end to create ab option. it ca;llsthe sellOption function of HegicPool contract
     function createOption(
         IHegicPool pool,
         uint256 period,
@@ -171,7 +176,7 @@ contract Facade is Ownable {
                 block.timestamp
             );
         }
-        pool.sellOption(buyer, period, amount, strike);
+        pool.sellOption(buyer, period, amount, strike);// calls Hegic Pool's sell Option
     }
 
     /**
@@ -179,6 +184,7 @@ contract Facade is Ownable {
      * into Wrapped Ether (WETH) and providing the funds into the pool.
      * @param hedged The liquidity tranche type: hedged or unhedged (classic)
      **/
+     //#HMD external  function calls from frontend
     function provideEthToPool(
         IHegicPool pool,
         bool hedged,
@@ -194,6 +200,7 @@ contract Facade is Ownable {
      * @notice Unlocks the array of options.
      * @param optionIDs The array of options
      **/
+     //#HMD , external function calls from frontend calls the unlock  function of HegicPool
     function unlockAll(IHegicPool pool, uint256[] calldata optionIDs) external {
         uint256 arrayLength = optionIDs.length;
         for (uint256 i = 0; i < arrayLength; i++) {
@@ -206,10 +213,11 @@ contract Facade is Ownable {
      * the permission to pay the gas (transaction) fees for the users.
      * @param forwarder GSN (Gas Station Network) contract address
      **/
+     //# HMD view function to confirm that the the forwarder is a trusted forwarder
     function isTrustedForwarder(address forwarder) public view returns (bool) {
         return forwarder == _trustedForwarder;
     }
-
+//#HD called from frontend to claim all  eligible profits in single call.
     function claimAllStakingProfits(
         IHegicStaking[] calldata stakings,
         address account
@@ -220,7 +228,7 @@ contract Facade is Ownable {
             if (s.profitOf(account) > 0) s.claimProfits(account);
         }
     }
-
+//#HMD returns the address of the  function caller, a supporing internal function accessed within the contract
     function _msgSender() internal view override returns (address signer) {
         signer = msg.sender;
         if (msg.data.length >= 20 && isTrustedForwarder(signer)) {
@@ -229,7 +237,7 @@ contract Facade is Ownable {
             }
         }
     }
-
+//#HMD external function, accessed from frontend to excercise the option by calling  the excercise function of HegicPool
     function exercise(uint256 optionId) external {
         require(
             optionsManager.isApprovedOrOwner(_msgSender(), optionId),
