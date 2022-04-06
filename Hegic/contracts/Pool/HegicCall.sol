@@ -50,7 +50,7 @@ contract HegicCALL is HegicPool {
             _priceProvider
         )
     {}
-
+//#HMD overrides and replaces the same name  function in HegicPool
     function _profitOf(Option memory option)
         internal
         view

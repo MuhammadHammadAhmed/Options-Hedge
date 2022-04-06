@@ -72,7 +72,7 @@ contract HegicPUT is HegicPool {
             SpotDecimals /
             1e8;
     }
-
+//#HMD overrides and replaces the same name  function in HegicPool
     function _calculateLockedAmount(uint256 amount)
         internal
         view
@@ -88,7 +88,7 @@ contract HegicPUT is HegicPool {
             1e8 /
             100;
     }
-
+//#HMD overrides and replaces the same name  function in HegicPool
     function _calculateTotalPremium(
         uint256 period,
         uint256 amount,
