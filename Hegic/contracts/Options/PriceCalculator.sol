@@ -62,6 +62,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * @notice Used for updating utilizationRate value
      * @param value New utilizationRate value
      **/
+     //#HMD  external function called  from frontend or externally to set UtilizationRate
     function setUtilizationRate(uint256 value) external onlyOwner {
         utilizationRate = value;
     }
@@ -99,6 +100,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * @param period The option period in seconds (1 days <= period <= 90 days)
      * @return fee The premium size to be paid
      **/
+     //#HMD internal view function, called within the contract.
     function _calculatePeriodFee(uint256 amount, uint256 period)
         internal
         view
@@ -115,6 +117,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * @param amount The option size
      * @param period The option period in seconds (1 days <= period <= 90 days)
      **/
+     //#HM interview function called from _calculatePeriodFee function above
     function _priceModifier(
         uint256 amount,
         uint256 period,
@@ -138,6 +141,8 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * See https://feeds.chain.link/
      * @return price Price
      **/
+          //#HM interview function called from calculateTotalPremium function above
+
     function _currentPrice() internal view returns (uint256 price) {
         (, int256 latestPrice, , , ) = priceProvider.latestRoundData();
         price = uint256(latestPrice);
