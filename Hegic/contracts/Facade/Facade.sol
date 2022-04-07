@@ -141,7 +141,7 @@ contract Facade is Ownable {
      * @param strike The option strike
      * @param acceptablePrice The highest acceptable price
      **/
-     //#HMD called from fron end to create ab option. it ca;llsthe sellOption function of HegicPool contract
+     //#HMD called from fron end to create ab option. it calls the sellOption function of HegicPool contract
     function createOption(
         IHegicPool pool,
         uint256 period,
