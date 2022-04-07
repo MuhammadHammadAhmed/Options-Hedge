@@ -519,11 +519,11 @@ abstract contract HegicPool is
      * if she exercises it as an ITM (in-the-money) option.
      * @param id ID of ERC721 token linked to the option
      **/
-     //HMD- view functioncalled from Facade  contract ad from front end
+     //#HMD- view functioncalled from Facade  contract ad from front end
     function profitOf(uint256 id) external view returns (uint256) {
         return _profitOf(options[id]);
     }
-//HMD- vinternal function called from ProfitOf function above
+//#HMD-  internal function called from ProfitOf function above
     function _profitOf(Option memory option)
         internal
         view
