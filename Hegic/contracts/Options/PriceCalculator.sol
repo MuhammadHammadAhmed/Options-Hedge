@@ -141,8 +141,8 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * See https://feeds.chain.link/
      * @return price Price
      **/
-          //#HM interview function called from calculateTotalPremium function above
 
+          //#HM interview function called from calculateTotalPremium function above
     function _currentPrice() internal view returns (uint256 price) {
         (, int256 latestPrice, , , ) = priceProvider.latestRoundData();
         price = uint256(latestPrice);
