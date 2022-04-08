@@ -54,6 +54,7 @@ contract PriceCalculator is IPriceCalculator, Ownable {
      * while balancing the asset's implied volatility rate.
      * @param value New IVRate value
      **/
+     //#HMD  external function, can be called from admin panel of etherscan  to set the implied volatility rate
     function setImpliedVolRate(uint256 value) external onlyOwner {
         impliedVolRate = value;
     }

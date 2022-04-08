@@ -220,7 +220,7 @@ abstract contract HegicPool is
      * @param strike The option strike
      * @return id ID of ERC721 token linked to the option
      **/
-     //#HMD called from Facade contract's createOption function
+     //#HMD called from Facade contract's createOption function and calls createOptionFor function to create a  Ption NFT
     function sellOption(
         address holder,
         uint256 period,
@@ -247,7 +247,7 @@ abstract contract HegicPool is
         uint256 unhedgePremium = premium - hedgedPremiumTotal;
 
         lockedAmount += amountToBeLocked;
-        id = optionsManager.createOptionFor(holder);
+        id = optionsManager.createOptionFor(holder);// create an option NFT 
         options[id] = Option(
             OptionState.Active,
             strike,
